@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff6fb">
+  <meta name="description" content="DocVerify membantu memeriksa integritas dan membandingkan dokumen digital secara lokal.">
+  <title>DocVerify — Digital Document Verification</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Library PDF, DOCX, dan OCR -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+  <div class="decoration deco-one" aria-hidden="true">✿</div>
+  <div class="decoration deco-two" aria-hidden="true">✧</div>
+  <div class="decoration deco-three" aria-hidden="true">♡</div>
+
+  <!-- HEADER -->
+  <header class="topbar">
+
+    <a class="brand" href="#" aria-label="DocVerify beranda">
+      <span class="brand-flower">✿</span>
+      Doc<span>Verify</span>
+    </a>
+
+    <nav class="site-nav">
+      <a href="#hash-section">SHA-256</a>
+      <a href="#verify-section">Verifikasi</a>
+      <a href="#compare-section">Bandingkan</a>
+      <a href="#history-section">Riwayat</a>
+    </nav>
+
+    <div class="top-actions">
+
+      <div class="student-mini">
+        <span class="student-mini-label">Developed by</span>
+        <strong>Salsabila Putri</strong>
+        <span class="student-mini-nim">NIM: 240511035</span>
+      </div>
+
+      <span class="secure-pill">
+        <span class="secure-dot"></span>
+        Diproses di perangkat
+      </span>
+
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <span class="eyebrow">
+        DIGITAL DOCUMENT PROTECTION · 2026
+      </span>
+
+      <h1>
+        Verify with care,<br>
+        <span>protect every document.</span>
+      </h1>
+
+        <p>
+  DocVerify merupakan sistem berbasis web yang dirancang
+  untuk membantu memeriksa integritas dokumen digital
+  melalui perhitungan hash SHA-256 dan perbandingan dokumen.
+</p>
+      </p>
+
+      <div class="tags">
+        <span>SHA-256</span>
+        <span>Document Compare</span>
+        <span>Local Processing</span>
+      </div>
+
+    </section>
+
+    <!-- LANGKAH 1 -->
+    <section class="card" id="hash-section">
+
+      <div class="section-heading">
+
+        <div class="icon-bubble">🔐</div>
+
+        <div>
+          <span class="step-label">01 · FILE HASH</span>
+
+          <h2>Sidik jari digital SHA-256</h2>
+
+          <p>
+            Hitung hash dari satu file, lalu simpan
+            sebagai referensi tepercaya.
+          </p>
+        </div>
+
+      </div>
+
+      <label class="drop-zone" for="fileInput">
+
+        <span class="upload-art">☁️</span>
+
+        <strong>
+          Pilih dokumen untuk dihitung hash-nya
+        </strong>
+
+        <small>
+          PDF, DOCX, TXT, JPG, PNG, WEBP, dan file lainnya · Maks. 15 MB
+        </small>
+
+      </label>
+
+      <input
+        type="file"
+        id="fileInput"
+        class="visually-hidden"
+      >
+
+      <div id="selectedFile" class="file-info" hidden></div>
+
+      <button
+        class="button button-primary"
+        id="hashBtn"
+        type="button"
+      >
+        Generate SHA-256
+      </button>
+
+      <div
+        id="hashPanel"
+        class="result-panel"
+        hidden
+        aria-live="polite"
+      >
+
+        <div class="result-heading">
+          <strong>Hash SHA-256</strong>
+          <span class="status-chip status-ok">
+            Berhasil dibuat
+          </span>
+        </div>
+
+        <code id="hashOutput"></code>
+
+        <div class="inline-actions">
+
+          <button
+            class="button button-soft"
+            id="copyHash"
+            type="button"
+          >
+            Salin hash
+          </button>
+
+          <button
+            class="button button-ghost"
+            id="useHash"
+            type="button"
+          >
+            Gunakan sebagai referensi ↓
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- LANGKAH 2 -->
+    <section class="card" id="verify-section">
+
+      <div class="section-heading">
+
+        <div class="icon-bubble">🪄</div>
+
+        <div>
+          <span class="step-label">02 · VERIFIKASI</span>
+
+          <h2>Cocokkan kode hash</h2>
+
+          <p>
+            Bandingkan hash file dengan hash referensi
+            yang kamu percaya.
+          </p>
+        </div>
+
+      </div>
+
+      <label class="field-label" for="referenceHash">
+        Hash referensi tepercaya
+      </label>
+
+      <textarea
+        id="referenceHash"
+        rows="3"
+        maxlength="128"
+        placeholder="Tempelkan 64 karakter hash SHA-256 di sini..."
+      ></textarea>
+
+      <button
+        class="button button-primary"
+        id="verifyBtn"
+        type="button"
+      >
+        Verifikasi hash
+      </button>
+
+      <div
+        id="verifyResult"
+        class="result-panel"
+        hidden
+        aria-live="polite"
+      ></div>
+
+      <p class="helper-note">
+        Tips: pilih file pada Langkah 01 terlebih dahulu.
+        Hash referensi harus berasal dari sumber yang tepercaya.
+      </p>
+
+    </section>
+
+    <!-- LANGKAH 3 -->
+    <section class="card" id="compare-section">
+
+      <div class="section-heading">
+
+        <div class="icon-bubble">📝</div>
+
+        <div>
+          <span class="step-label">03 · PERBANDINGAN</span>
+
+          <h2>Bandingkan dua dokumen</h2>
+
+          <p>
+            Unggah dokumen asli dan dokumen yang ingin diperiksa.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="upload-grid">
+
+        <div class="upload-field">
+
+          <label class="field-label" for="originalFile">
+            Dokumen asli / referensi
+          </label>
+
+          <input
+            type="file"
+            id="originalFile"
+            accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp"
+          >
+
+        </div>
+
+        <div class="upload-field">
+
+          <label class="field-label" for="editedFile">
+            Dokumen yang diperiksa
+          </label>
+
+          <input
+            type="file"
+            id="editedFile"
+            accept=".pdf,.docx,.txt,.jpg,.jpeg,.png,.webp"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="compare-options">
+
+        <label class="check-row">
+
+          <input
+            type="checkbox"
+            id="enableOCR"
+            checked
+          >
+
+          <span>
+            <b>Aktifkan OCR otomatis</b>
+
+            <small>
+              Untuk PDF hasil scan dan gambar.
+              Perlu internet saat library OCR dimuat.
+            </small>
+          </span>
+
+        </label>
+
+      </div>
+
+      <div
+        id="compareProgress"
+        class="progress-wrap"
+        hidden
+      >
+
+        <div class="progress-top">
+          <span id="progressLabel">Menyiapkan...</span>
+          <span id="progressPercent">0%</span>
+        </div>
+
+        <div class="progress-track">
+          <div id="progressBar"></div>
+        </div>
+
+      </div>
+
+      <button
+        class="button button-primary"
+        id="compareBtn"
+        type="button"
+      >
+        Bandingkan dokumen
+      </button>
+
+      <div
+        id="compareResult"
+        class="result-panel compare-output"
+        hidden
+        aria-live="polite"
+      >
+
+        <h3 id="compareTitle"></h3>
+
+        <p id="compareSummary"></p>
+
+        <div id="differenceList"></div>
+
+      </div>
+
+      <p class="helper-note">
+        Format yang sama lebih ideal untuk perbandingan.
+        PDF/DOCX/TXT dibandingkan berdasarkan teks yang dapat diekstrak.
+        Gambar dibandingkan berdasarkan piksel dan dapat dibantu OCR.
+      </p>
+
+    </section>
+
+    <!-- RIWAYAT -->
+    <section class="card" id="history-section">
+
+      <div class="section-heading">
+
+        <div class="icon-bubble">⌁</div>
+
+        <div>
+          <span class="step-label">AKTIVITAS TERBARU</span>
+
+          <h2>Riwayat pemeriksaan</h2>
+
+          <p>
+            Riwayat ringkas disimpan di browser perangkat ini.
+          </p>
+        </div>
+
+        <button
+          class="button button-ghost button-small"
+          id="clearHistory"
+          type="button"
+        >
+          Hapus riwayat
+        </button>
+
+      </div>
+
+      <div id="historyList">
+
+        <p class="empty-state">
+          Belum ada aktivitas. Riwayat pemeriksaan akan muncul di sini.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- FITUR -->
+    <section class="feature-grid">
+
+      <article class="feature-card">
+        <span>🔐</span>
+
+        <h3>SHA-256</h3>
+
+        <p>
+          Menghasilkan sidik jari digital unik berdasarkan
+          seluruh byte file.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <span>🔎</span>
+
+        <h3>Perbandingan isi</h3>
+
+        <p>
+          Menunjukkan baris teks yang berbeda pada
+          dokumen yang dapat dibaca.
+        </p>
+      </article>
+
+      <article class="feature-card">
+        <span>🖼️</span>
+
+        <h3>OCR & gambar</h3>
+
+        <p>
+          Membaca teks pada hasil scan dan membandingkan
+          perubahan piksel gambar.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- CATATAN KEAMANAN -->
+    <aside class="security-note">
+
+      <strong>♡ Catatan keamanan dan batasan</strong>
+
+      <p>
+        File diproses di browser dan tidak diunggah oleh kode aplikasi ini.
+        Library PDF/DOCX/OCR dimuat dari CDN pihak ketiga.
+        Hasil OCR dapat keliru; pemeriksaan piksel dapat sensitif terhadap
+        perubahan ukuran, kompresi, atau posisi.
+        Hash cocok berarti byte file sama dengan referensi, bukan bukti
+        identitas pembuat atau keabsahan hukum dokumen.
+        Jangan gunakan hasil ini sebagai satu-satunya dasar keputusan penting.
+      </p>
+
+    </aside>
+
+  </main>
+
+  <footer>
+    DocVerify · Digital Document Verification
+    <span>Digital document integrity</span>
+  </footer>
+
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
+
+</body>
+</html>
